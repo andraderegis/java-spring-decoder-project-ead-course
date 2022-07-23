@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.ead.course.models.CourseModel;
 
-public interface CouseRepository extends JpaRepository<CourseModel, UUID> {
+public interface CourseRepository extends JpaRepository<CourseModel, UUID> {
 
 }
