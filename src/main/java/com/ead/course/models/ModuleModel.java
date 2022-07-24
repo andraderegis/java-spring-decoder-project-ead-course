@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -51,10 +52,10 @@ public class ModuleModel implements Serializable {
    * serialização/deserialização somente em operações de escrita
    */
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-  @ManyToOne(optional = false)
+  @ManyToOne(optional = false, fetch = FetchType.LAZY)
   private CourseModel course;
 
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-  @OneToMany(mappedBy = "module")
+  @OneToMany(mappedBy = "module", fetch = FetchType.LAZY)
   private Set<LessonModel> lessons;
 }
