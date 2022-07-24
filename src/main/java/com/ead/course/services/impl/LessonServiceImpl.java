@@ -11,5 +11,4 @@ public class LessonServiceImpl implements LessonService {
 
   @Autowired
   LessonRepository lessonRepository;
-
 }
