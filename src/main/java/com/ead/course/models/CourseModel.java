@@ -19,6 +19,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.ead.course.enums.CourseLevel;
@@ -103,5 +105,6 @@ public class CourseModel implements Serializable {
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
   @Fetch(FetchMode.SUBSELECT)
+  @OnDelete(action = OnDeleteAction.CASCADE)
   private Set<ModuleModel> modules;
 }

@@ -1,5 +1,7 @@
 package com.ead.course.services;
 
-public interface ModuleService {
+import com.ead.course.models.ModuleModel;
 
+public interface ModuleService {
+  void delete(ModuleModel module);
 }
