@@ -51,8 +51,32 @@ public class LessonModel implements Serializable {
   private LocalDateTime updatedAt;
 
   /*
+   * Relacionamentos unidirecionais geram mais querys do que relacionamentos
+   * bidirecionais, além do hibernante gerar automaticamente gera tabelas
+   * associativas.
+   * 
+   * Outro ponto é sempre que possível utilizar Set em mapeamentos como esse. Além
+   * de melhorar a performance, se houver mais coleções OneToMany mapeadas, ele
+   * trará resultados somente da primeira coleção.
+   * 
    * Utilizando o JsonProperty como feito abaixo, o mesmo será exibido em uma
    * serialização/deserialização somente em operações de escrita
+   * 
+   * FetchMode.SELECT: Realiza uma consulta inicial para trazer os cursos,
+   * além de fazer uma consulta separada para cada um dos módulos vinculados aos
+   * cursos. É um modo muito custoso.
+   * 
+   * FetchMode.JOIN: Realiza em uma única consulta todos os dados dos cursos, bem
+   * como todos os dados dos módulos vinculados a ele. Nesse modo, o
+   * FetchType.LAZY é ignorado,
+   * retornando todos os dados como ocorre no FetchType.EAGER
+   * 
+   * FetchMode.SUBSELECT: Realiza uma consulta que retorna dos cursos e, uma única
+   * consulta que retorna todos os dados referentes aos módulos. Nesse modo,
+   * diferente do FetchMode.JOIN, o FetchType.LAZY é respeitado.
+   * 
+   * Caso nenhum FetchMode não seja definido, o modo padrão utilizado pelo
+   * hibernate é o FetchMode.JOIN
    */
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
