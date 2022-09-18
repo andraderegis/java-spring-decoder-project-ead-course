@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.UUID;
 
 import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 
 import org.springframework.data.jpa.domain.Specification;
@@ -46,4 +47,33 @@ public class SpecificationTemplate {
           criteriaBuilder.isMember(module, coursesModules));
     };
   }
+
+  public static Specification<LessonModel> lessonModuleId(final UUID moduleId) {
+    return (root, query, criteriaBuilder) -> {
+      query.distinct(true);
+
+      // Using inner join to avoid Hibernante N+1 queries
+      root.fetch("module", JoinType.INNER);
+
+      Root<LessonModel> lesson = root;
+      Root<ModuleModel> module = query.from(ModuleModel.class);
+      Expression<Collection<LessonModel>> moduleLessons = module.get("lessons");
+
+      return criteriaBuilder.and(criteriaBuilder.equal(module.get("id"), moduleId),
+          criteriaBuilder.isMember(lesson, moduleLessons));
+    };
+  }
+
+  // public static Specification<LessonModel> lessonModuleId(final UUID moduleId)
+  // {
+  // return (root, query, criteriaBuilder) -> {
+  // query.distinct(true);
+  // Root<LessonModel> lesson = root;
+  // Root<ModuleModel> module = query.from(ModuleModel.class);
+  // Expression<Collection<LessonModel>> moduleLessons = module.get("lessons");
+
+  // return criteriaBuilder.and(criteriaBuilder.equal(module.get("id"), moduleId),
+  // criteriaBuilder.isMember(lesson, moduleLessons));
+  // };
+  // }
 }
